@@ -1,0 +1,70 @@
+<table class="table table-striped table-bordered table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>Company</th>
+      <th>Ticker</th>
+      <th>Current Price</th>
+      <th>Market Volume</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <div id="stocks">
+      <% @stocks.each do |stock| %> <% if stock.user_id == current_user.id %> <%
+      begin %> <% @ticker = TelescopeStocks::Search.get_stock(stock.ticker) %>
+      <% if !@ticker %>
+      <tr>
+        <td><%= link_to 'Error', stock %></td>
+        <td><%= stock.ticker %></td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>
+          <center>
+            <%= link_to 'Edit', edit_stock_path(stock), class: "link-secondary"
+            %>
+          </center>
+        </td>
+        <td>
+          <center>
+            <%= link_to 'Delete', stock, method: :delete, data: {confirm: 'Are
+            you sure?'}, class: "link-secondary" %>
+          </center>
+        </td>
+      </tr>
+      <% else %>
+      <tr>
+        <td>
+          <%= @ticker["quoteSummary"]["result"][0]["price"]["longName"] %>
+        </td>
+        <td><%= @ticker["quoteSummary"]["result"][0]["price"]["symbol"] %></td>
+        <td>
+          $<%=
+          number_with_precision(@ticker["quoteSummary"]["result"][0]["price"]["regularMarketPrice"]["raw"],
+          precision: 2)%>
+        </td>
+        <td>
+          <%=
+          number_with_delimiter(@ticker["quoteSummary"]["result"][0]["price"]["regularMarketVolume"]["raw"],
+          delimiter: ",")%>
+        </td>
+        <td>
+          <center>
+            <%= link_to 'Edit', edit_stock_path(stock), class: "link-secondary"
+            %>
+          </center>
+        </td>
+        <td>
+          <center>
+            <%= link_to 'Delete', stock , method: :delete, data: {confirm: 'Are
+            you sure?'}, class: "link-secondary" %>
+          </center>
+        </td>
+      </tr>
+      <% end %> <% rescue %> <% @error = 'Stock not defined' %> <% end %> <% end
+      %> <% end %>
+    </div>
+  </tbody>
+</table>
+
+<%= link_to "New stock", new_stock_path %>

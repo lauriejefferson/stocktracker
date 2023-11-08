@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <%= link_to "Stock Tracker", root_path, class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to "About", home_about_path, class: "nav-link" %>
+        </li>
+         <li class="nav-item">
+         <%= link_to "Show Stocks" , stocks_path, class: "nav-link active" %>
+        </li>
+         <li class="nav-item">
+         <%= link_to "Add Stock" , new_stock_path, class: "nav-link active" %>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+      <% if user_signed_in? %>
+        Logged in as <strong><%= current_user.email %></strong>
+        <%= link_to "Edit Profile", edit_user_registration_path, class: "navbar-link text-white me-2" %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-success" %>
+      <% else %>
+        <%= link_to "Sign up", new_user_registration_path, class: "navbar-link text-white mx-3" %>
+        <%= link_to "Login", new_user_session_path, class: "navbar-link text-white" %>
+      <% end %>
+    </div>
+  </div>
+</nav>
